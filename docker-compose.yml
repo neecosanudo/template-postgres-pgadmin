@@ -20,11 +20,14 @@ services:
       - 8080:80
     depends_on:
       - postgres-database
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
     networks:
       - pgnetwork
 
 volumes:
   db_data:
+  pgadmin_data:
 
 networks:
   pgnetwork:
