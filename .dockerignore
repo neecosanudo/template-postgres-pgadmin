@@ -1,0 +1,23 @@
+# Archivos de registro y caché
+*.log
+*.tmp
+*.swp
+
+# Directorios específicos de bases de datos
+db_data/
+
+# Ignorar Dockerfiles y otros archivos de configuración de Docker
+Dockerfile
+docker-compose.yml
+
+# Archivos de Git
+.gitignore
+
+# Cualquier archivo de respaldo o temporal
+*.bak
+*.old
+*.orig
+
+# Archivos y directorios de sistemas operativos
+.DS_Store
+Thumbs.db
