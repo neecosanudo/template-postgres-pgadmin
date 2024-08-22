@@ -24,3 +24,17 @@ CREATE TABLE prestamos_libros (
   CONSTRAINT fk_usuario_id FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
   CONSTRAINT fk_libro_id FOREIGN KEY (libro_id) REFERENCES libros(id)  
 );
+
+CREATE TABLE autores (
+  id SERIAL PRIMARY KEY,
+  nombres VARCHAR(24) NOT NULL,
+  apellidos VARCHAR(24) NOT NULL
+);
+
+CREATE TABLE libros_autores (
+  id_libro INT NOT NULL,
+  id_autor INT NOT NULL,
+  
+  CONSTRAINT fk_id_libro FOREIGN KEY (id_libro) REFERENCES libros(id),
+  CONSTRAINT fk_id_autor FOREIGN KEY (id_autor) REFERENCES autores(id)
+);
