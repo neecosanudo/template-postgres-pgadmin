@@ -15,14 +15,21 @@ CREATE TABLE libros (
   nombre VARCHAR(50) NOT NULL
 );
 
+CREATE TABLE ejemplares (
+  id SERIAL PRIMARY KEY,
+  libro_id INT NOT NULL,
+  
+  CONSTRAINT fk_libro_id FOREIGN KEY (libro_id) REFERENCES libros(id)
+);
+
 CREATE TABLE prestamos_libros (
   id SERIAL PRIMARY KEY,
   usuario_id INT NOT NULL,
-  libro_id INT NOT NULL,
+  ejemplar_id INT NOT NULL UNIQUE,
   fecha_prestamo TIMESTAMP DEFAULT NOW(),
   
   CONSTRAINT fk_usuario_id FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
-  CONSTRAINT fk_libro_id FOREIGN KEY (libro_id) REFERENCES libros(id)  
+  CONSTRAINT fk_ejemplar_id FOREIGN KEY (ejemplar_id) REFERENCES ejemplares(id)  
 );
 
 CREATE TABLE autores (
