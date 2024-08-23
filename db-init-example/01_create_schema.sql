@@ -6,7 +6,7 @@ CREATE TABLE usuarios (
   id SERIAL PRIMARY KEY,
   nombres VARCHAR(24) NOT NULL,
   apellidos VARCHAR(24) NOT NULL,
-  datos_usuarios_id INT NOT NULL UNIQUE,
+  datos_usuarios_id INT UNIQUE,
   CONSTRAINT fk_datos_usuarios_id FOREIGN KEY (datos_usuarios_id) REFERENCES datos_usuarios(id)
 );
 
@@ -26,7 +26,7 @@ CREATE TABLE prestamos_libros (
   id SERIAL PRIMARY KEY,
   usuario_id INT NOT NULL,
   ejemplar_id INT NOT NULL UNIQUE,
-  fecha_prestamo TIMESTAMP DEFAULT NOW(),
+  fecha_prestamo TIMESTAMP,
   
   CONSTRAINT fk_usuario_id FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
   CONSTRAINT fk_ejemplar_id FOREIGN KEY (ejemplar_id) REFERENCES ejemplares(id)  
