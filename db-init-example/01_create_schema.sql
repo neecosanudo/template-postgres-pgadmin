@@ -1,5 +1,16 @@
 CREATE TABLE datos_usuarios (
-  id SERIAL PRIMARY KEY
+  id SERIAL PRIMARY KEY,
+  domicilio JSONB,
+  contacto JSONB,
+
+  CONSTRAINT check_formato_domicilio CHECK (
+    (domicilio ? 'calle') AND (jsonb_typeof(domicilio->'calle') = 'string') AND
+    (domicilio ? 'numero') AND (jsonb_typeof(domicilio->'numero') = 'string')
+  ),
+  CONSTRAINT check_formato_contacto CHECK (
+    (contacto ? 'telefono') AND (jsonb_typeof(contacto->'telefono') = 'string') AND
+    (contacto ? 'email') AND (jsonb_typeof(contacto->'email') = 'string')
+  )
 );
 
 CREATE TABLE usuarios (
