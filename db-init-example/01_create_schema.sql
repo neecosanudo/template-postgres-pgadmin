@@ -18,7 +18,7 @@ CREATE TABLE datos_usuarios (
 
 CREATE TABLE usuarios (
   id SERIAL PRIMARY KEY,
-  dni INT NOT NULL UNIQUE,
+  dni VARCHAR(8) NOT NULL UNIQUE,
   datos_usuarios_id INT UNIQUE,
   CONSTRAINT fk_datos_usuarios_id FOREIGN KEY (datos_usuarios_id) REFERENCES datos_usuarios(id)
 );
@@ -26,8 +26,8 @@ CREATE TABLE usuarios (
 CREATE TABLE libros (
   id SERIAL PRIMARY KEY,
   nombre VARCHAR(50) NOT NULL,
-  ISBN INT NOT NULL UNIQUE,
-  fecha_publicacion TIMESTAMP NOT NULL
+  ISBN VARCHAR(17) NOT NULL UNIQUE,
+  fecha_publicacion DATE NOT NULL
 );
 
 CREATE TABLE ejemplares (
@@ -40,8 +40,9 @@ CREATE TABLE ejemplares (
 CREATE TABLE prestamos_libros (
   id SERIAL PRIMARY KEY,
   usuario_id INT NOT NULL,
-  ejemplar_id INT NOT NULL UNIQUE,
-  fecha_prestamo TIMESTAMP,
+  ejemplar_id INT NOT NULL,
+  fecha_prestamo TIMESTAMP NOT NULL DEFAULT NOW(),
+  fecha_devolucion TIMESTAMP,
   
   CONSTRAINT fk_usuario_id FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
   CONSTRAINT fk_ejemplar_id FOREIGN KEY (ejemplar_id) REFERENCES ejemplares(id)  
@@ -54,13 +55,15 @@ CREATE TABLE autores (
   fecha_nacimiento TIMESTAMP NOT NULL,
   fecha_fallecimiento TIMESTAMP,
   pais_nacimiento VARCHAR(24),
-  biografia VARCHAR(256)
+  biografia TEXT
 );
 
 CREATE TABLE libros_autores (
   id_libro INT NOT NULL,
   id_autor INT NOT NULL,
   
+  CONSTRAINT pk_libros_autores PRIMARY KEY (id_libro, id_autor),
+
   CONSTRAINT fk_id_libro FOREIGN KEY (id_libro) REFERENCES libros(id),
   CONSTRAINT fk_id_autor FOREIGN KEY (id_autor) REFERENCES autores(id)
 );
