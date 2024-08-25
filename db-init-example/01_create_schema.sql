@@ -1,7 +1,10 @@
 CREATE TABLE datos_usuarios (
   id SERIAL PRIMARY KEY,
+  nombres VARCHAR(24) NOT NULL,
+  apellidos VARCHAR(24) NOT NULL,
   domicilio JSONB,
   contacto JSONB,
+  fecha_creacion TIMESTAMP DEFAULT NOW(),
 
   CONSTRAINT check_formato_domicilio CHECK (
     (domicilio ? 'calle') AND (jsonb_typeof(domicilio->'calle') = 'string') AND
@@ -15,15 +18,16 @@ CREATE TABLE datos_usuarios (
 
 CREATE TABLE usuarios (
   id SERIAL PRIMARY KEY,
-  nombres VARCHAR(24) NOT NULL,
-  apellidos VARCHAR(24) NOT NULL,
+  dni INT NOT NULL UNIQUE,
   datos_usuarios_id INT UNIQUE,
   CONSTRAINT fk_datos_usuarios_id FOREIGN KEY (datos_usuarios_id) REFERENCES datos_usuarios(id)
 );
 
 CREATE TABLE libros (
   id SERIAL PRIMARY KEY,
-  nombre VARCHAR(50) NOT NULL
+  nombre VARCHAR(50) NOT NULL,
+  ISBN INT NOT NULL UNIQUE,
+  fecha_publicacion TIMESTAMP NOT NULL
 );
 
 CREATE TABLE ejemplares (
@@ -46,7 +50,11 @@ CREATE TABLE prestamos_libros (
 CREATE TABLE autores (
   id SERIAL PRIMARY KEY,
   nombres VARCHAR(24) NOT NULL,
-  apellidos VARCHAR(24) NOT NULL
+  apellidos VARCHAR(24) NOT NULL,
+  fecha_nacimiento TIMESTAMP NOT NULL,
+  fecha_fallecimiento TIMESTAMP,
+  pais_nacimiento VARCHAR(24),
+  biografia VARCHAR(256)
 );
 
 CREATE TABLE libros_autores (
