@@ -1,4 +1,6 @@
-CREATE TABLE datos_usuarios (
+CREATE SCHEMA data;
+
+CREATE TABLE data.datos_usuarios (
   id SERIAL PRIMARY KEY,
   nombres VARCHAR(24) NOT NULL,
   apellidos VARCHAR(24) NOT NULL,
@@ -16,39 +18,39 @@ CREATE TABLE datos_usuarios (
   )
 );
 
-CREATE TABLE usuarios (
+CREATE TABLE data.usuarios (
   id SERIAL PRIMARY KEY,
   dni VARCHAR(8) NOT NULL UNIQUE,
   datos_usuarios_id INT UNIQUE,
-  CONSTRAINT fk_datos_usuarios_id FOREIGN KEY (datos_usuarios_id) REFERENCES datos_usuarios(id)
+  CONSTRAINT fk_datos_usuarios_id FOREIGN KEY (datos_usuarios_id) REFERENCES data.datos_usuarios(id)
 );
 
-CREATE TABLE libros (
+CREATE TABLE data.libros (
   id SERIAL PRIMARY KEY,
   nombre VARCHAR(50) NOT NULL,
   ISBN VARCHAR(17) NOT NULL UNIQUE,
   fecha_publicacion DATE NOT NULL
 );
 
-CREATE TABLE ejemplares (
+CREATE TABLE data.ejemplares (
   id SERIAL PRIMARY KEY,
   libro_id INT NOT NULL,
   
-  CONSTRAINT fk_libro_id FOREIGN KEY (libro_id) REFERENCES libros(id)
+  CONSTRAINT fk_libro_id FOREIGN KEY (libro_id) REFERENCES data.libros(id)
 );
 
-CREATE TABLE prestamos_libros (
+CREATE TABLE data.prestamos_libros (
   id SERIAL PRIMARY KEY,
   usuario_id INT NOT NULL,
   ejemplar_id INT NOT NULL,
   fecha_prestamo TIMESTAMP NOT NULL DEFAULT NOW(),
   fecha_devolucion TIMESTAMP,
   
-  CONSTRAINT fk_usuario_id FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
-  CONSTRAINT fk_ejemplar_id FOREIGN KEY (ejemplar_id) REFERENCES ejemplares(id)  
+  CONSTRAINT fk_usuario_id FOREIGN KEY (usuario_id) REFERENCES data.usuarios(id),
+  CONSTRAINT fk_ejemplar_id FOREIGN KEY (ejemplar_id) REFERENCES data.ejemplares(id)  
 );
 
-CREATE TABLE autores (
+CREATE TABLE data.autores (
   id SERIAL PRIMARY KEY,
   nombres VARCHAR(24) NOT NULL,
   apellidos VARCHAR(24) NOT NULL,
@@ -58,12 +60,12 @@ CREATE TABLE autores (
   biografia TEXT
 );
 
-CREATE TABLE libros_autores (
+CREATE TABLE data.libros_autores (
   id_libro INT NOT NULL,
   id_autor INT NOT NULL,
   
   CONSTRAINT pk_libros_autores PRIMARY KEY (id_libro, id_autor),
 
-  CONSTRAINT fk_id_libro FOREIGN KEY (id_libro) REFERENCES libros(id),
-  CONSTRAINT fk_id_autor FOREIGN KEY (id_autor) REFERENCES autores(id)
+  CONSTRAINT fk_id_libro FOREIGN KEY (id_libro) REFERENCES data.libros(id),
+  CONSTRAINT fk_id_autor FOREIGN KEY (id_autor) REFERENCES data.autores(id)
 );
