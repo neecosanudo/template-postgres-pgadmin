@@ -69,3 +69,22 @@ CREATE TABLE data.libros_autores (
   CONSTRAINT fk_id_libro FOREIGN KEY (id_libro) REFERENCES data.libros(id),
   CONSTRAINT fk_id_autor FOREIGN KEY (id_autor) REFERENCES data.autores(id)
 );
+
+
+-----------------------------------------------------------------------------
+--- DATA_VIEWS: ESQUEMA PARA VISTAS DE CONSULTAS FRECUENTES
+-----------------------------------------------------------------------------
+
+CREATE SCHEMA data_views;
+
+--- NOMBRE: resumen_usuarios
+--- Contiene id, nombre completo y ejemplares que tiene en su posesión.
+
+CREATE VIEW data_views.resumen_usuarios AS
+SELECT u.id, du.nombres, du.apellidos, pl.ejemplar_id, l.nombre
+FROM data.usuarios AS u 
+JOIN data.datos_usuarios AS du ON du.id = u.datos_usuarios_id
+JOIN data.prestamos_libros AS pl ON pl.usuario_id = u.id
+JOIN data.ejemplares AS ej ON ej.id = pl.ejemplar_id
+JOIN data.libros AS l ON l.id = ej.libro_id
+WHERE pl.fecha_devolucion IS NULL;
